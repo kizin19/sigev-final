@@ -1,10 +1,9 @@
 <script setup>
 import { reactive } from 'vue'
 import { useRouter } from 'vue-router'
-import { useRegistroStore } from '../stores/registroStore'
+import api from '../api'
 
 const router = useRouter()
-const store = useRegistroStore()
 
 const form = reactive({
   nombre: '',
@@ -16,7 +15,7 @@ const form = reactive({
 
 const regexCURP = /^[A-Z]{1}[AEIOU]{1}[A-Z]{2}[0-9]{2}(0[1-9]|1[0-2])(0[1-9]|1[0-9]|2[0-9]|3[0-1])[HM]{1}[A-Z]{2}[B-DF-HJ-NP-TV-Z]{3}[A-Z0-9]{1}[0-9]{1}$/
 
-const enviar = () => {
+const enviar = async () => {
   if (!form.nombre || !form.apellidos || !form.curp || !form.telefono || !form.direccion) {
     alert('Por favor completa todos los campos')
     return
@@ -32,8 +31,26 @@ const enviar = () => {
     return
   }
 
-  store.agregarRegistro({ ...form, curp: form.curp.toUpperCase() })
-  router.push('/confirmacion')
+  try {
+    const res = await api.post('/registro', {
+      curp:       form.curp.toUpperCase(),
+      telefono:   form.telefono,
+      nombre:     form.nombre,
+      apellidos:  form.apellidos,
+      direccion:  form.direccion,
+      casilla_id: 1
+    })
+    router.push({
+      path: '/confirmacion',
+      query: {
+        token:  res.data.token,
+        hora:   res.data.hora_asignada,
+        nombre: form.nombre
+      }
+    })
+  } catch (err) {
+    alert(err.response?.data?.error || 'Error al registrar, intenta de nuevo')
+  }
 }
 </script>
 
@@ -79,6 +96,7 @@ const enviar = () => {
     </div>
   </div>
 </template>
+
 
 <style scoped>
 .container {
@@ -144,7 +162,6 @@ const enviar = () => {
 .field input:focus {
   border-color: #7c3aed;
 }
-
 .hint {
   font-size: 0.75rem;
   color: #7c3aed;

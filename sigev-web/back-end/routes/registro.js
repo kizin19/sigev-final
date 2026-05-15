@@ -6,21 +6,18 @@ const twilio   = require('twilio')
 require('dotenv').config()
 
 const client = twilio(
-    process.env.TWILIO_ACCOUNT_SID,
-    process.env.TWILIO_AUTH_TOKEN
+    'AC2945f44081a43d958cbb20535c20d647',
+    '04b6e0b6f2e3b6a3ecb7b1912d07a697'
 )
 
-// POST /registro — registra un ciudadano y genera su token
 router.post('/', async (req, res) => {
-    const { curp, telefono, casilla_id, canal } = req.body
+    const { curp, telefono, nombre, apellidos, direccion, casilla_id } = req.body
 
-    // Validación básica
     if (!curp || !casilla_id) {
         return res.status(400).json({ error: 'CURP y casilla son requeridos' })
     }
 
     try {
-        // 1. Verificar que el CURP no esté ya registrado
         const existe = await pool.query(
             'SELECT id FROM ciudadanos WHERE curp = $1',
             [curp]
@@ -29,55 +26,50 @@ router.post('/', async (req, res) => {
             return res.status(409).json({ error: 'Este CURP ya está registrado' })
         }
 
-        // 2. Registrar al ciudadano
         const ciudadano = await pool.query(
-            `INSERT INTO ciudadanos (curp, telefono, canal)
-             VALUES ($1, $2, $3) RETURNING id`,
-            [curp, telefono || null, canal || 'web']
+            `INSERT INTO ciudadanos (curp, telefono, nombre, apellidos, direccion)
+             VALUES ($1, $2, $3, $4, $5) RETURNING id`,
+            [curp, telefono || null, nombre || null, apellidos || null, direccion || null]
         )
         const ciudadano_id = ciudadano.rows[0].id
 
-        // 3. Generar token único
         const token = uuidv4()
 
-        // 4. Calcular hora asignada (próximo slot disponible)
         const hora_asignada = new Date()
         hora_asignada.setMinutes(hora_asignada.getMinutes() + 30)
 
-        // 5. Crear cita
         await pool.query(
             `INSERT INTO citas (ciudadano_id, casilla_id, hora_asignada)
              VALUES ($1, $2, $3)`,
             [ciudadano_id, casilla_id, hora_asignada]
         )
 
-        // 6. Guardar token en base de datos
         await pool.query(
             `INSERT INTO tokens (token, ciudadano_id, casilla_id, tipo)
              VALUES ($1, $2, $3, 'cita')`,
             [token, ciudadano_id, casilla_id]
         )
 
-        // 7. Enviar SMS si tiene teléfono
         if (telefono) {
-            const hora_formato = hora_asignada.toLocaleTimeString('es-MX', {
-                hour: '2-digit', minute: '2-digit'
-            })
-            await client.messages.create({
-                body: `SIGEV: Tu registro fue exitoso.\nToken: ${token}\nHora asignada: ${hora_formato}\nPreséntate 5 min antes en tu casilla.`,
-                from: process.env.TWILIO_PHONE,
-                to:   `+52${telefono}`
-            })
+    const hora_formato = hora_asignada.toLocaleTimeString('es-MX', {
+        hour: '2-digit', minute: '2-digit'
+    })
+    try {
+        await client.messages.create({
+            body: `SIGEV: Tu registro fue exitoso.\nToken: ${token}\nHora asignada: ${hora_formato}\nPreséntate 5 min antes en tu casilla.`,
+            from: '+17752957554',
+            to:   `+52${telefono}`
+        })
+        await pool.query(
+            `INSERT INTO notificaciones (ciudadano_id, tipo, canal, mensaje, enviado, enviado_at)
+             VALUES ($1, 'confirmacion', 'sms', $2, true, NOW())`,
+            [ciudadano_id, `Token ${token} enviado`]
+        )
+    } catch (twilioErr) {
+        console.error('Error Twilio completo:', twilioErr)
+    }
+}
 
-            // Registrar notificación enviada
-            await pool.query(
-                `INSERT INTO notificaciones (ciudadano_id, tipo, canal, mensaje, enviado, enviado_at)
-                 VALUES ($1, 'confirmacion', 'sms', $2, true, NOW())`,
-                [ciudadano_id, `Token ${token} enviado`]
-            )
-        }
-
-        // 8. Respuesta al frontend
         res.status(201).json({
             mensaje:       'Registro exitoso',
             token:         token,
