@@ -33,6 +33,15 @@ const r = store.ultimoRegistro
           <span class="etiqueta">Dirección</span>
           <span>{{ r.direccion }}</span>
         </div>
+        <div class="fila">
+  <span class="etiqueta">Casilla asignada</span>
+  <span class="casilla">{{ r.casilla }}</span>
+</div>
+
+<div class="fila">
+  <span class="etiqueta">Ubicación</span>
+  <span class="direccion-casilla">📍 {{ r.direccionCasilla }}</span>
+</div>
       </div>
 
       <div class="botones">
@@ -153,5 +162,16 @@ h1 { font-size: 1.8rem; color: #7c3aed; }
 .btn-informate:hover {
   background: #6d28d9;
   transform: scale(1.03);
+}
+
+.casilla {
+  color: #7c3aed;
+  font-weight: bold;
+}
+
+.direccion-casilla {
+  color: #7c3aed;
+  font-size: 0.85rem;
+  text-align: right;
 }
 </style>
