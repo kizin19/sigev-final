@@ -30,8 +30,8 @@ export const useRegistroStore = defineStore('registro', {
       const registro = {
         ...datos,
         folio,
-        casilla: casilla.nombre,
-        direccionCasilla: casilla.direccion,
+        casilla: datos.casilla || casilla.nombre,
+        direccionCasilla: datos.direccionCasilla || casilla.direccion,
         estado: 'pendiente'
       }
 
