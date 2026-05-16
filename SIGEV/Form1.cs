@@ -5,11 +5,18 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Runtime.InteropServices;
 
 namespace SIGEV
 {
     public partial class Form1 : Form
     {
+        // Importamos la función de la API de Windows para modificar atributos de la ventana
+        [DllImport("dwmapi.dll", CharSet = CharSet.Unicode, SetLastError = true)]
+        private static extern long DwmSetWindowAttribute(IntPtr hwnd, int attribute, ref int pvAttribute, int cbAttribute);
+
+        // Constante que le dice a Windows que queremos cambiar el color del borde/barra de título
+        private const int DWMWA_CAPTION_COLOR = 35;
         private const string API_URL = "https://swimmer-frenzied-crouch.ngrok-free.dev";
         //private const string API_URL = "http://10.33.14.109:3000";
         private const int CASILLA_ID = 1;
@@ -153,6 +160,16 @@ namespace SIGEV
                 btnEmergencia.Enabled = true;
                 btnEmergencia.Text = "⚠️ Emergencia";
             }
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            // El color debe estar en formato BGR (Blue, Green, Red) en lugar de RGB.
+            // Por ejemplo, para un Azul Marino (como el de tu diseño): #143278 -> BGR sería 0x783214
+            int colorBGR = 0xEC3A7B;
+
+            // Aplicamos el color al marco de este Form
+            DwmSetWindowAttribute(this.Handle, DWMWA_CAPTION_COLOR, ref colorBGR, sizeof(int));
         }
     }
 }
