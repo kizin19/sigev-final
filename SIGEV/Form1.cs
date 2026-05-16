@@ -1,10 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,10 +10,10 @@ namespace SIGEV
 {
     public partial class Form1 : Form
     {
-        // Cambia esta IP por la de tu laptop el día del hackathon
         private const string API_URL = "http://10.33.14.109:3000";
         private const int CASILLA_ID = 1;
         private static readonly HttpClient http = new HttpClient();
+
         public Form1()
         {
             InitializeComponent();
@@ -48,7 +44,7 @@ namespace SIGEV
             pbIcono.Image = Properties.Resources.mal;
         }
 
-        private void btnValidar_Click(object sender, EventArgs e)
+        private async void btnValidar_Click(object sender, EventArgs e)
         {
             string token = txtToken.Text.Trim();
 
@@ -80,14 +76,14 @@ namespace SIGEV
 
                 if (valido)
                 {
-                    
-                    lblResultado.ForeColor = System.Drawing.Color.DarkGreen;
+                    Autorizado();
+                    lblResultado.ForeColor = Color.DarkGreen;
                     lblResultado.Text = "✅ " + mensaje;
                 }
                 else
                 {
-                   
-                    lblResultado.ForeColor = System.Drawing.Color.DarkRed;
+                    Rechazado();
+                    lblResultado.ForeColor = Color.DarkRed;
                     lblResultado.Text = "❌ " + mensaje;
                 }
             }
@@ -102,6 +98,5 @@ namespace SIGEV
                 txtToken.Focus();
             }
         }
-
     }
 }

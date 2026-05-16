@@ -37,7 +37,7 @@
             this.lbSub = new System.Windows.Forms.Label();
             this.lbEstado = new System.Windows.Forms.Label();
             this.pbIcono = new System.Windows.Forms.PictureBox();
-            this.lblresultado = new System.Windows.Forms.Label();
+            this.lblResultado = new System.Windows.Forms.Label();
             this.gbToken.SuspendLayout();
             this.gbValidar.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbIcono)).BeginInit();
@@ -146,21 +146,21 @@
             this.pbIcono.TabIndex = 0;
             this.pbIcono.TabStop = false;
             // 
-            // lblresultado
+            // lblResultado
             // 
-            this.lblresultado.AutoSize = true;
-            this.lblresultado.Location = new System.Drawing.Point(587, 176);
-            this.lblresultado.Name = "lblresultado";
-            this.lblresultado.Size = new System.Drawing.Size(48, 16);
-            this.lblresultado.TabIndex = 2;
-            this.lblresultado.Text = "validar";
+            this.lblResultado.AutoSize = true;
+            this.lblResultado.Location = new System.Drawing.Point(587, 176);
+            this.lblResultado.Name = "lblResultado";
+            this.lblResultado.Size = new System.Drawing.Size(48, 16);
+            this.lblResultado.TabIndex = 2;
+            this.lblResultado.Text = "validar";
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.lblresultado);
+            this.Controls.Add(this.lblResultado);
             this.Controls.Add(this.gbValidar);
             this.Controls.Add(this.gbToken);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
@@ -187,7 +187,7 @@
         private System.Windows.Forms.PictureBox pbIcono;
         private System.Windows.Forms.Label lbSub;
         private System.Windows.Forms.Label lbEstado;
-        private System.Windows.Forms.Label lblresultado;
+        private System.Windows.Forms.Label lblResultado;
     }
 }
 

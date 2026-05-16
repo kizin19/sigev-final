@@ -2,7 +2,6 @@ const express = require('express')
 const router  = express.Router()
 const pool    = require('../db/connection')
 
-// POST /tokens/validar — valida y quema un token (lo usa la app C#)
 router.post('/validar', async (req, res) => {
     const { token, casilla_id } = req.body
 
@@ -14,10 +13,9 @@ router.post('/validar', async (req, res) => {
     }
 
     try {
-        // Llama a la función atómica de PostgreSQL
         const result = await pool.query(
             'SELECT valido, mensaje FROM validar_token($1, $2)',
-            [token, casilla_id]
+            [token, parseInt(casilla_id)]
         )
         const { valido, mensaje } = result.rows[0]
         res.json({ valido, mensaje })
@@ -28,7 +26,6 @@ router.post('/validar', async (req, res) => {
     }
 })
 
-// GET /tokens/panel — datos para el panel IEE
 router.get('/panel', async (req, res) => {
     try {
         const result = await pool.query('SELECT * FROM panel_iee ORDER BY municipio, nombre')
