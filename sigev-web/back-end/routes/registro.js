@@ -6,9 +6,10 @@ const twilio   = require('twilio')
 require('dotenv').config()
 
 const client = twilio(
-    'AC2945f44081a43d958cbb20535c20d647',
-    '04b6e0b6f2e3b6a3ecb7b1912d07a697'
+    process.env.TWILIO_ACCOUNT_SID,
+    process.env.TWILIO_AUTH_TOKEN
 )
+
 
 router.post('/', async (req, res) => {
     const { curp, telefono, nombre, apellidos, direccion, casilla_id } = req.body
@@ -33,7 +34,7 @@ router.post('/', async (req, res) => {
         )
         const ciudadano_id = ciudadano.rows[0].id
 
-        const token = uuidv4()
+        const token = uuidv4().split('-')[0].toUpperCase()
 
         const hora_asignada = new Date()
         hora_asignada.setMinutes(hora_asignada.getMinutes() + 30)

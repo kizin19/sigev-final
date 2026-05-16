@@ -93,6 +93,7 @@ const partidos = [
       <h1>Conoce a los partidos</h1>
       <p>Infórmate antes de votar. Aquí están las propuestas de cada partido participante.</p>
     </div>
+  </div>
 
     <div class="partidos">
       <div class="partido-card" v-for="p in partidos" :key="p.siglas">
