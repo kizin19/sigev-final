@@ -71,11 +71,18 @@ router.post('/', async (req, res) => {
     }
 }
 
+        const casilla = await pool.query(
+            'SELECT nombre, municipio FROM casillas WHERE id = $1',
+            [casilla_id]
+        )
+
         res.status(201).json({
             mensaje:       'Registro exitoso',
             token:         token,
             hora_asignada: hora_asignada,
-            ciudadano_id:  ciudadano_id
+            ciudadano_id:  ciudadano_id,
+            casilla_nombre: casilla.rows[0]?.nombre || 'No asignada',
+            casilla_direccion: casilla.rows[0]?.municipio || ''
         })
 
     } catch (err) {

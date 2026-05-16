@@ -43,12 +43,14 @@ const enviar = async () => {
       casilla_id: 1
     })
     store.agregarRegistro({
-      folio:     res.data.token,
-      nombre:    form.nombre,
-      apellidos: form.apellidos,
-      curp:      form.curp.toUpperCase(),
-      telefono:  form.telefono,
-      direccion: form.direccion
+      folio:            res.data.token,
+      nombre:           form.nombre,
+      apellidos:        form.apellidos,
+      curp:             form.curp.toUpperCase(),
+      telefono:         form.telefono,
+      direccion:        form.direccion,
+      casilla:          res.data.casilla_nombre,
+      direccionCasilla: res.data.casilla_direccion
     })
     router.push('/confirmacion')
   } catch (err) {
