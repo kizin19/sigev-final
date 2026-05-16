@@ -10,13 +10,15 @@ namespace SIGEV
 {
     public partial class Form1 : Form
     {
-        private const string API_URL = "http://10.33.14.109:3000";
+        private const string API_URL = "https://swimmer-frenzied-crouch.ngrok-free.dev";
+        //private const string API_URL = "http://10.33.14.109:3000";
         private const int CASILLA_ID = 1;
         private static readonly HttpClient http = new HttpClient();
 
         public Form1()
         {
             InitializeComponent();
+            http.DefaultRequestHeaders.Add("ngrok-skip-browser-warning", "true");
         }
 
         private void btnLimpiar_Click(object sender, EventArgs e)
