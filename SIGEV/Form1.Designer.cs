@@ -38,9 +38,12 @@
             this.lbEstado = new System.Windows.Forms.Label();
             this.pbIcono = new System.Windows.Forms.PictureBox();
             this.lblResultado = new System.Windows.Forms.Label();
+            this.btnEmergencia = new System.Windows.Forms.Button();
+            this.nudHoras = new System.Windows.Forms.NumericUpDown();
             this.gbToken.SuspendLayout();
             this.gbValidar.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbIcono)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudHoras)).BeginInit();
             this.SuspendLayout();
             // 
             // gbToken
@@ -149,17 +152,36 @@
             // lblResultado
             // 
             this.lblResultado.AutoSize = true;
-            this.lblResultado.Location = new System.Drawing.Point(587, 176);
+            this.lblResultado.Location = new System.Drawing.Point(503, 75);
             this.lblResultado.Name = "lblResultado";
             this.lblResultado.Size = new System.Drawing.Size(48, 16);
             this.lblResultado.TabIndex = 2;
             this.lblResultado.Text = "validar";
+            // 
+            // btnEmergencia
+            // 
+            this.btnEmergencia.Location = new System.Drawing.Point(644, 358);
+            this.btnEmergencia.Name = "btnEmergencia";
+            this.btnEmergencia.Size = new System.Drawing.Size(128, 39);
+            this.btnEmergencia.TabIndex = 3;
+            this.btnEmergencia.Text = "Emergencia";
+            this.btnEmergencia.UseVisualStyleBackColor = true;
+            this.btnEmergencia.Click += new System.EventHandler(this.btnEmergencia_Click);
+            // 
+            // nudHoras
+            // 
+            this.nudHoras.Location = new System.Drawing.Point(644, 416);
+            this.nudHoras.Name = "nudHoras";
+            this.nudHoras.Size = new System.Drawing.Size(120, 22);
+            this.nudHoras.TabIndex = 4;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.nudHoras);
+            this.Controls.Add(this.btnEmergencia);
             this.Controls.Add(this.lblResultado);
             this.Controls.Add(this.gbValidar);
             this.Controls.Add(this.gbToken);
@@ -171,6 +193,7 @@
             this.gbValidar.ResumeLayout(false);
             this.gbValidar.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbIcono)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudHoras)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -188,6 +211,8 @@
         private System.Windows.Forms.Label lbSub;
         private System.Windows.Forms.Label lbEstado;
         private System.Windows.Forms.Label lblResultado;
+        private System.Windows.Forms.Button btnEmergencia;
+        private System.Windows.Forms.NumericUpDown nudHoras;
     }
 }
 

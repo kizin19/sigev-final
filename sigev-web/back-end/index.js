@@ -26,3 +26,5 @@ app.listen(process.env.PORT, () => {
 app.use(cors({
     origin: '*'
 }))
+
+app.use('/emergencia', require('./routes/emergencia'))

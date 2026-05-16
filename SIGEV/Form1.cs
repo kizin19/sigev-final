@@ -100,5 +100,59 @@ namespace SIGEV
                 txtToken.Focus();
             }
         }
+
+        private async void btnEmergencia_Click(object sender, EventArgs e)
+        {
+            int horas = (int)nudHoras.Value;
+
+            if (horas <= 0)
+            {
+                MessageBox.Show("Selecciona las horas de retraso", "Error");
+                return;
+            }
+
+            var confirmacion = MessageBox.Show(
+                $"¿Activar modo emergencia con {horas} hora(s) de retraso?\nSe notificará a todos los ciudadanos afectados por SMS.",
+                "⚠️ Modo Emergencia",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Warning
+            );
+
+            if (confirmacion != DialogResult.Yes) return;
+
+            btnEmergencia.Enabled = false;
+            btnEmergencia.Text = "Procesando...";
+
+            try
+            {
+                var body = new
+                {
+                    casilla_id = 1,
+                    horas_retraso = horas
+                };
+
+                var json = JsonConvert.SerializeObject(body);
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+                var response = await http.PostAsync($"{API_URL}/emergencia", content);
+                var responseText = await response.Content.ReadAsStringAsync();
+                var resultado = JsonConvert.DeserializeObject<dynamic>(responseText);
+
+                MessageBox.Show(
+                    $"Emergencia procesada.\nCiudadanos afectados: {resultado.afectados}\nNotificados por SMS: {resultado.notificados}",
+                    "✅ Emergencia activada",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information
+                );
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error: " + ex.Message, "Error de conexión");
+            }
+            finally
+            {
+                btnEmergencia.Enabled = true;
+                btnEmergencia.Text = "⚠️ Emergencia";
+            }
+        }
     }
 }
