@@ -1,9 +1,11 @@
 <script setup>
 import { reactive } from 'vue'
 import { useRouter } from 'vue-router'
+import { useRegistroStore } from '../stores/registroStore'
 import api from '../api'
 
 const router = useRouter()
+const store  = useRegistroStore()
 
 const form = reactive({
   nombre: '',
@@ -40,14 +42,15 @@ const enviar = async () => {
       direccion:  form.direccion,
       casilla_id: 1
     })
-    router.push({
-      path: '/confirmacion',
-      query: {
-        token:  res.data.token,
-        hora:   res.data.hora_asignada,
-        nombre: form.nombre
-      }
+    store.agregarRegistro({
+      folio:     res.data.token,
+      nombre:    form.nombre,
+      apellidos: form.apellidos,
+      curp:      form.curp.toUpperCase(),
+      telefono:  form.telefono,
+      direccion: form.direccion
     })
+    router.push('/confirmacion')
   } catch (err) {
     alert(err.response?.data?.error || 'Error al registrar, intenta de nuevo')
   }
@@ -96,7 +99,6 @@ const enviar = async () => {
     </div>
   </div>
 </template>
-
 
 <style scoped>
 .container {
@@ -162,6 +164,7 @@ const enviar = async () => {
 .field input:focus {
   border-color: #7c3aed;
 }
+
 .hint {
   font-size: 0.75rem;
   color: #7c3aed;

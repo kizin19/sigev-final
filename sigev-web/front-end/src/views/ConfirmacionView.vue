@@ -36,13 +36,13 @@ const r = store.ultimoRegistro
       </div>
 
       <div class="botones">
-  <button class="btn-nuevo" @click="router.push('/')">
-    ← Nuevo registro
-  </button>
-  <button class="btn-informate" @click="router.push('/informate')">
-    Infórmate
-  </button>
-</div>
+        <button class="btn-nuevo" @click="router.push('/')">
+          ← Nuevo registro
+        </button>
+        <button class="btn-informate" @click="router.push('/informate')">
+          Infórmate
+        </button>
+      </div>
     </div>
 
     <div v-else class="card">
@@ -114,24 +114,6 @@ h1 { font-size: 1.8rem; color: #7c3aed; }
   font-size: 0.8rem;
   letter-spacing: 1px;
   white-space: nowrap;
-}
-
-.btn-nuevo {
-  width: 100%;
-  padding: 0.8rem;
-  background: #f5f5f5;
-  color: #333;
-  border: 1px solid #ddd;
-  border-radius: 10px;
-  cursor: pointer;
-  font-weight: bold;
-  transition: all 0.2s;
-}
-
-.btn-nuevo:hover {
-  border-color: #7c3aed;
-  color: #7c3aed;
-  transform: scale(1.03);
 }
 
 .botones {
